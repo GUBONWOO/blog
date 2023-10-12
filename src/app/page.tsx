@@ -1,3 +1,4 @@
+import CarouselPosts from '@/components/CarouselPosts';
 import FeaturedPosts from '@/components/FeaturedPosts';
 import Hero from '@/components/Hero';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ export default function HomePage() {
       <section className='bg-gray-500'>Main</section>
       <Hero />
       <FeaturedPosts />
+      <CarouselPosts />
     </>
   );
 }
