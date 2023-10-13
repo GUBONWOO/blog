@@ -1,22 +1,24 @@
 'use client';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import Banner, { BannerData } from './Banner';
+
 import { sendContactEmail } from '@/service/contact';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import Banner, { BannerData } from './Banner';
 
 type Form = {
   from: string;
   subject: string;
   message: string;
 };
+
 const DEFAULT_DATA = {
   from: '',
   subject: '',
   message: '',
 };
-
 export default function ContactForm() {
   const [form, setForm] = useState<Form>(DEFAULT_DATA);
   const [banner, setBanner] = useState<BannerData | null>(null);
+
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -24,17 +26,17 @@ export default function ContactForm() {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendContactEmail(form)
+    sendContactEmail(form) //
       .then(() => {
         setBanner({
-          message: '메일을 성공적으로 보냄',
+          message: '메일을 성공적으로 보냈습니다.',
           state: 'success',
         });
         setForm(DEFAULT_DATA);
       })
-      .catch(() => {
+      .catch((error) => {
         setBanner({
-          message: '메일전송에 실패함',
+          message: '메일전송에 실패했습니다. 다시 시도해 주세요',
           state: 'error',
         });
       })
@@ -44,12 +46,13 @@ export default function ContactForm() {
         }, 3000);
       });
   };
+
   return (
-    <section className=' w-full max-w-md'>
+    <section className='w-full max-w-md'>
       {banner && <Banner banner={banner} />}
       <form
         onSubmit={onSubmit}
-        className='w-full max-w-md flex flex-col gap-2 m-4 p-4 bg-slate-700 rounded-xl text-white'
+        className='w-full flex flex-col gap-2 my-4 p-4 bg-slate-700 rounded-xl text-white'
       >
         <label htmlFor='from' className='font-semibold'>
           Your Email
@@ -62,7 +65,6 @@ export default function ContactForm() {
           autoFocus
           value={form.from}
           onChange={onChange}
-          className='text-black'
         />
         <label htmlFor='subject' className='font-semibold'>
           Subject
@@ -72,10 +74,8 @@ export default function ContactForm() {
           id='subject'
           name='subject'
           required
-          autoFocus
           value={form.subject}
           onChange={onChange}
-          className='text-black'
         />
         <label htmlFor='message' className='font-semibold'>
           Message
@@ -85,13 +85,12 @@ export default function ContactForm() {
           id='message'
           name='message'
           required
-          autoFocus
           value={form.message}
           onChange={onChange}
           className='text-black'
         />
-        <button className='bg-yellow-300 text-black font-semibold'>
-          Summit
+        <button className='bg-yellow-300 text-black font-bold hover:bg-yellow-400'>
+          Submit
         </button>
       </form>
     </section>
